@@ -86,12 +86,12 @@ public class ImageSendActivity extends AppCompatActivity {
     }
 
     public void initialize() {
-        selectImage = findViewById(R.id.selectImage);
-        sendImage = findViewById(R.id.sendImage);
-        iv_image = findViewById(R.id.image);
-        et_name = findViewById(R.id.name);
-        et_description = findViewById(R.id.description);
-        et_password = findViewById(R.id.password);
+        selectImage = findViewById(R.id.btn_select_image);
+        sendImage = findViewById(R.id.btn_encrypt);
+        iv_image = findViewById(R.id.imageView);
+        et_name = findViewById(R.id.et_image_name);
+        et_description = findViewById(R.id.et_image_description);
+        et_password = findViewById(R.id.et_image_password);
     }
 
     public void showImage() {
@@ -111,7 +111,7 @@ public class ImageSendActivity extends AppCompatActivity {
         RequestBody password = RequestBody.create(et_password.getText().toString(), MediaType.parse("multipart/form-data"));
 
         progressDialog = new ProgressDialog(ImageSendActivity.this);
-        progressDialog.setMessage("SENDING");
+        progressDialog.setMessage("Encrypting");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -123,7 +123,7 @@ public class ImageSendActivity extends AppCompatActivity {
             public void onResponse(Call<ImagePostResponse> call, Response<ImagePostResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Sended successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Encrypted successfully", Toast.LENGTH_LONG).show();
                 }
             }
 

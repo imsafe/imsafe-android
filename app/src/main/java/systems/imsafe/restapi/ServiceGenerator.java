@@ -2,11 +2,12 @@ package systems.imsafe.restapi;
 
 import android.text.TextUtils;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import systems.imsafe.restapi.AuthenticationInterceptor;
 
 public class ServiceGenerator {
     public static final String API_BASE_URL = "https://imsafe.systems/api/";
@@ -42,7 +43,7 @@ public class ServiceGenerator {
                     new AuthenticationInterceptor(authToken);
 
             if (!httpClient.interceptors().contains(interceptor)) {
-                httpClient.addInterceptor(interceptor);
+                httpClient.connectTimeout(1000, TimeUnit.SECONDS).readTimeout(1000, TimeUnit.SECONDS).addInterceptor(interceptor);
 
                 builder.client(httpClient.build());
                 retrofit = builder.build();

@@ -14,6 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
                 //listImages();
             }
         });
+
+
     }
 
     public void basicAuth() {
@@ -65,8 +70,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void submitData() {
-
-
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setMessage(getString(R.string.loading));
         progressDialog.setCancelable(false);
@@ -83,19 +86,19 @@ public class LoginActivity extends AppCompatActivity {
                 //hiding progress dialog
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-//                    List<Image> images = response.body();
-//                    Intent imageIntent = new Intent(getApplicationContext(), ImageListActivity.class);
-                    Intent i = new Intent(LoginActivity.this, ImageSendActivity.class);
+                    Toast.makeText(getApplicationContext(), "You have successfully logged in", Toast.LENGTH_SHORT).show();
+                    List<Image> images = response.body();
+                    Intent imageIntent = new Intent(getApplicationContext(), ImageListActivity.class);
+                    //Intent i = new Intent(LoginActivity.this, ImageSendActivity.class);
 //                    Bundle b = new Bundle();
 //                    b.putString("username", enteredUsername);
 //                    b.putString("password", enteredPassword);
 //                    i.putExtras(b);
-                    startActivity(i);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("images", (Serializable) images);
-//                    imageIntent.putExtras(bundle);
-//                    startActivity(imageIntent);
+                    //startActivity(i);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("images", (Serializable) images);
+                    imageIntent.putExtras(bundle);
+                    startActivity(imageIntent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
                 }
@@ -109,12 +112,5 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
-
-//    public void listImages() {
-//        RestApi restApi = submitData();
-//
-//
-//    }
-
 
 }

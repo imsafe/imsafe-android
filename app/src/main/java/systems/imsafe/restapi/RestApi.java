@@ -9,7 +9,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import systems.imsafe.models.Image;
+import systems.imsafe.models.ImageDecryptionResponse;
 import systems.imsafe.models.ImagePostResponse;
 
 public interface RestApi {
@@ -22,5 +24,10 @@ public interface RestApi {
                                       @Part("name") RequestBody name,
                                       @Part("description") RequestBody description,
                                       @Part("password") RequestBody password);
+
+
+    @Multipart
+    @POST("images/{id}/decrypt/")
+    Call<ImageDecryptionResponse> decryptImage(@Path("id") String id, @Part("password") RequestBody password);
 
 }
