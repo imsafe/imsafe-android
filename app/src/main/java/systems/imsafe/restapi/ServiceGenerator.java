@@ -43,7 +43,11 @@ public class ServiceGenerator {
                     new AuthenticationInterceptor(authToken);
 
             if (!httpClient.interceptors().contains(interceptor)) {
-                httpClient.connectTimeout(1000, TimeUnit.SECONDS).readTimeout(1000, TimeUnit.SECONDS).addInterceptor(interceptor);
+                httpClient.connectTimeout(1000, TimeUnit.SECONDS)
+                        .readTimeout(1000, TimeUnit.SECONDS)
+                        .callTimeout(1000, TimeUnit.SECONDS)
+                        .writeTimeout(1000, TimeUnit.SECONDS)
+                        .addInterceptor(interceptor);
 
                 builder.client(httpClient.build());
                 retrofit = builder.build();

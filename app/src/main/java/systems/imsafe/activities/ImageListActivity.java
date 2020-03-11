@@ -29,14 +29,15 @@ import systems.imsafe.models.Image;
 import systems.imsafe.models.ImageDecryptionResponse;
 import systems.imsafe.restapi.RestApi;
 import systems.imsafe.restapi.ServiceGenerator;
+import systems.imsafe.utils.ImagePasswordDialog;
 
-public class ImageListActivity extends AppCompatActivity {
+public class ImageListActivity extends AppCompatActivity implements ImagePasswordDialog.ImagePasswordDialogListener {
     ListView lvImageList;
     RestApi restApi;
     private ImageAdapter imageAdapter;
     private ProgressDialog progressDialog;
     private FloatingActionButton fab;
-
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +64,11 @@ public class ImageListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(ImageList2Activity.this, imageAdapter.getItem(position).getId().toString(), Toast.LENGTH_SHORT).show();
-
-                decrypt(imageAdapter.getItem(position).getId());
+                //openDialog();
+                //decrypt(imageAdapter.getItem(position).getId());
+                Intent intent = new Intent(getApplicationContext(),ImageDecryptionActivity.class);
+                intent.putExtra("id", imageAdapter.getItem(position).getId());
+                startActivity(intent);
             }
         });
 
@@ -79,36 +83,48 @@ public class ImageListActivity extends AppCompatActivity {
 
     }
 
-    public void decrypt(Integer imageId) {
-        RequestBody password = RequestBody.create("12345", MediaType.parse("multipart/form-data"));
-
-
-        restApi = ServiceGenerator.createService(RestApi.class);
-        progressDialog = new ProgressDialog(ImageListActivity.this);
-        progressDialog.setMessage("DECRYPTING");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        Call<ImageDecryptionResponse> call = restApi.decryptImage(imageId.toString(), password);
-
-        call.enqueue(new Callback<ImageDecryptionResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<ImageDecryptionResponse> call, @NotNull Response<ImageDecryptionResponse> response) {
-                progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Decrypted successfully", Toast.LENGTH_LONG).show();
-                int statusCode = response.code();
-                Log.e("Tag", "onResponse response " + response.isSuccessful());
-                Log.e("status", "onResponse response " + statusCode);
-                Toast.makeText(getApplicationContext(), response.body().getImage(), Toast.LENGTH_LONG).show();
-
-                //Toast.makeText(getApplicationContext(), response.body().getStatus(), Toast.LENGTH_LONG).show();
-
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<ImageDecryptionResponse> call, @NotNull Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(getApplicationContext(), "ERROR: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+    public void openDialog() {
+        ImagePasswordDialog imagePasswordDialog = new ImagePasswordDialog();
+        imagePasswordDialog.show(getSupportFragmentManager(),"image password dialog");
     }
+
+    @Override
+    public void applyText(String password) {
+        this.password = password;
+
+    }
+
+//    public void decrypt(Integer imageId) {
+//        RequestBody password = RequestBody.create("1234448", MediaType.parse("multipart/form-data"));
+//
+//
+//        restApi = ServiceGenerator.createService(RestApi.class);
+//        progressDialog = new ProgressDialog(ImageListActivity.this);
+//        progressDialog.setMessage("Decrypting");
+//        progressDialog.setCancelable(false);
+//        progressDialog.show();
+//        Call<ImageDecryptionResponse> call = restApi.decryptImage(imageId.toString(), password);
+//
+//        call.enqueue(new Callback<ImageDecryptionResponse>() {
+//            @Override
+//            public void onResponse(@NotNull Call<ImageDecryptionResponse> call, @NotNull Response<ImageDecryptionResponse> response) {
+//                progressDialog.dismiss();
+//                Toast.makeText(getApplicationContext(), "Decrypted successfully", Toast.LENGTH_LONG).show();
+//                int statusCode = response.code();
+//                Log.e("Tag", "onResponse response " + response.isSuccessful());
+//                Log.e("status", "onResponse response " + statusCode);
+//                Toast.makeText(getApplicationContext(), response.body().getImage(), Toast.LENGTH_LONG).show();
+//                Intent intent = new Intent(getApplicationContext(),ImageViewActivity.class);
+//                intent.putExtra("decryptedImageUrl", response.body().getImage());
+//                //Toast.makeText(getApplicationContext(), response.body().getStatus(), Toast.LENGTH_LONG).show();
+//                startActivity(intent);
+//            }
+//
+//            @Override
+//            public void onFailure(@NotNull Call<ImageDecryptionResponse> call, @NotNull Throwable t) {
+//                t.printStackTrace();
+//                Toast.makeText(getApplicationContext(), "ERROR: " + t.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        });
+//    }
 }
