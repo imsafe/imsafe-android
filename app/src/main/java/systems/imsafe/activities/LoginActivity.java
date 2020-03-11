@@ -14,8 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -56,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 basicAuth();
                 submitData();
-                //listImages();
             }
         });
 
@@ -74,9 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage(getString(R.string.loading));
         progressDialog.setCancelable(false);
         progressDialog.show();
-
-//        final RestApi restApi = ServiceGenerator.createService(RestApi.class, enteredUsername, enteredPassword);
-
+        
         Call<List<Image>> call = restApi.basicLogin();
 
         //calling the api
