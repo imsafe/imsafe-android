@@ -26,14 +26,15 @@ import systems.imsafe.R;
 import systems.imsafe.adapters.ImageAdapter;
 import systems.imsafe.models.Image;
 import systems.imsafe.models.ImageDecryptionResponse;
-import systems.imsafe.restapi.RestApi;
+import systems.imsafe.restapi.ImSafeService;
 import systems.imsafe.restapi.ServiceGenerator;
 import systems.imsafe.utils.ImagePasswordDialog;
 
 public class ImageListActivity extends AppCompatActivity implements ImagePasswordDialog.ImagePasswordDialogListener {
-    ListView lvImageList;
-    RestApi restApi;
-    int id;
+    private ListView lvImageList;
+    private ImSafeService service;
+    private int selectedImageId;
+    private List<Image> images = null;
     private ImageAdapter imageAdapter;
     private ProgressDialog progressDialog;
     private FloatingActionButton fab;
@@ -42,40 +43,56 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_list);
-        fab = findViewById(R.id.floatingActionButton);
-        lvImageList = findViewById(R.id.lv_image);
-
-        Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
-
-        List<Image> images = null;
-
-        if (bundle != null) {
-            images = (List<Image>) bundle.getSerializable("images");
-        }
-        assert images != null;
-
-        ArrayList<Image> imageList = new ArrayList<>(images);
-
-        imageAdapter = new ImageAdapter(this, imageList);
-        lvImageList.setAdapter(imageAdapter);
-        lvImageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setId(imageAdapter.getItem(position).getId());
-                openDialog();
-            }
-        });
-
+        initialize();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ImageSendActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ImageEncryptionActivity.class);
                 startActivity(intent);
             }
         });
 
+        getImageList();
+    }
+
+    public void initialize() {
+        fab = findViewById(R.id.floatingActionButton);
+        lvImageList = findViewById(R.id.lv_image);
+    }
+
+    public void getImageList() {
+        service = ServiceGenerator.createService(ImSafeService.class);
+
+        Call<List<Image>> call = service.getImageList();
+
+        call.enqueue(new Callback<List<Image>>() {
+
+            @Override
+            public void onResponse(@NotNull Call<List<Image>> call, @NotNull Response<List<Image>> response) {
+                if (response.isSuccessful()) {
+                    images = response.body();
+                    assert images != null;
+
+                    ArrayList<Image> imageList = new ArrayList<>(images);
+
+                    imageAdapter = new ImageAdapter(ImageListActivity.this, imageList);
+                    lvImageList.setAdapter(imageAdapter);
+                    lvImageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            setSelectedImageId(imageAdapter.getItem(position).getId());
+                            openDialog();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<Image>> call, @NotNull Throwable t) {
+
+            }
+        });
     }
 
     public void openDialog() {
@@ -83,17 +100,17 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
         imagePasswordDialog.show(getSupportFragmentManager(), "image password dialog");
     }
 
-    public int getId() {
-        return this.id;
+    public int getSelectedImageId() {
+        return this.selectedImageId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSelectedImageId(int selectedImageId) {
+        this.selectedImageId = selectedImageId;
     }
 
     @Override
     public void applyText(String password) {
-        decrypt(getId(), password);
+        decrypt(getSelectedImageId(), password);
     }
 
     public void decrypt(Integer imageId, String imagePassword) {
@@ -101,12 +118,12 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
         RequestBody password = RequestBody.create(imagePassword, MediaType.parse("multipart/form-data"));
 
 
-        restApi = ServiceGenerator.createService(RestApi.class);
+        //service = ServiceGenerator.createService(ImSafeService.class);
         progressDialog = new ProgressDialog(ImageListActivity.this);
         progressDialog.setMessage("Decrypting");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        Call<ImageDecryptionResponse> call = restApi.decryptImage(imageId.toString(), password);
+        Call<ImageDecryptionResponse> call = service.decryptImage(imageId.toString(), password);
 
         call.enqueue(new Callback<ImageDecryptionResponse>() {
             @Override
@@ -119,6 +136,7 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
 //                Log.e("status", "onResponse response " + statusCode);
 //                Toast.makeText(getApplicationContext(), response.body().getImage(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), ImageViewActivity.class);
+                    assert response.body() != null;
                     intent.putExtra("decryptedImageUrl", response.body().getImage());
                     startActivity(intent);
                 }

@@ -1,5 +1,6 @@
 package systems.imsafe.utils;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import java.util.Objects;
+
 import systems.imsafe.R;
 
 public class ImagePasswordDialog extends AppCompatDialogFragment {
@@ -24,8 +27,8 @@ public class ImagePasswordDialog extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_dialog, null);
+        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.layout_dialog, null);
         builder.setView(view)
                 .setTitle("Decrypt Image")
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {

@@ -16,8 +16,8 @@ import systems.imsafe.models.Image;
 
 public class ImageAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
-    Activity context;
-    ArrayList<Image> images;
+    private Activity context;
+    private ArrayList<Image> images;
 
     public ImageAdapter(Activity context, ArrayList<Image> images) {
         this.context = context;
@@ -44,10 +44,10 @@ public class ImageAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View itemView = convertView;
-        itemView = (itemView == null) ? inflater.inflate(R.layout.list_item,null) : itemView;
+        itemView = (itemView == null) ? inflater.inflate(R.layout.list_item, null) : itemView;
         TextView tv_name = itemView.findViewById(R.id.tv_name);
         TextView tv_description = itemView.findViewById(R.id.tv_description);
-        Image selectedImage =  images.get(position);
+        Image selectedImage = images.get(position);
         tv_name.setText(selectedImage.getName());
         tv_description.setText(selectedImage.getDescription());
         return itemView;

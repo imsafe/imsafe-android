@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -39,28 +38,26 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import systems.imsafe.R;
-import systems.imsafe.models.ImagePostResponse;
-import systems.imsafe.restapi.RestApi;
+import systems.imsafe.models.ImageEncryptionResponse;
+import systems.imsafe.restapi.ImSafeService;
 import systems.imsafe.restapi.ServiceGenerator;
 
-public class ImageSendActivity extends AppCompatActivity {
+public class ImageEncryptionActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
-    Button selectImage, sendImage;
-    ImageView iv_image;
-    EditText et_name, et_description, et_password;
-    Bitmap bitmap;
-    String imagePath;
-    RestApi restApi;
-    ProgressDialog progressDialog;
+    private Button selectImage, sendImage;
+    private ImageView iv_image;
+    private EditText et_name, et_description, et_password;
+    private String imagePath;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_send);
+        setContentView(R.layout.activity_image_encryption);
         initialize();
-        basicAuth();
-        checkPermissionREAD_EXTERNAL_STORAGE(ImageSendActivity.this);
+
+        checkPermissionREAD_EXTERNAL_STORAGE(ImageEncryptionActivity.this);
 
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,20 +67,13 @@ public class ImageSendActivity extends AppCompatActivity {
         });
 
         sendImage.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                send();
+                encrypt();
             }
         });
     }
 
-    public void basicAuth() {
-//        Bundle b = getIntent().getExtras();
-//        String enteredUsername = b.getString("username");
-//        String enteredPassword = b.getString("password");
-        restApi = ServiceGenerator.createService(RestApi.class);
-    }
 
     public void initialize() {
         selectImage = findViewById(R.id.btn_select_image);
@@ -100,7 +90,7 @@ public class ImageSendActivity extends AppCompatActivity {
         startActivityForResult(intent, 777);
     }
 
-    public void send() {
+    public void encrypt() {
         File file = new File(imagePath);
 
         RequestBody requestBody = RequestBody.create(file, MediaType.parse("multipart/form-data"));
@@ -110,17 +100,18 @@ public class ImageSendActivity extends AppCompatActivity {
         RequestBody description = RequestBody.create(et_description.getText().toString(), MediaType.parse("multipart/form-data"));
         RequestBody password = RequestBody.create(et_password.getText().toString(), MediaType.parse("multipart/form-data"));
 
-        progressDialog = new ProgressDialog(ImageSendActivity.this);
+        progressDialog = new ProgressDialog(ImageEncryptionActivity.this);
         progressDialog.setMessage("Encrypting");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        Call<ImagePostResponse> call = restApi.sendImage(image, name, description, password);
+        ImSafeService service = ServiceGenerator.createService(ImSafeService.class);
+        Call<ImageEncryptionResponse> call = service.encryptImage(image, name, description, password);
 
 
-        call.enqueue(new Callback<ImagePostResponse>() {
+        call.enqueue(new Callback<ImageEncryptionResponse>() {
             @Override
-            public void onResponse(Call<ImagePostResponse> call, Response<ImagePostResponse> response) {
+            public void onResponse(Call<ImageEncryptionResponse> call, Response<ImageEncryptionResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Encrypted successfully", Toast.LENGTH_LONG).show();
@@ -128,7 +119,7 @@ public class ImageSendActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ImagePostResponse> call, Throwable t) {
+            public void onFailure(Call<ImageEncryptionResponse> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(getApplicationContext(), "ERROR: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -143,7 +134,7 @@ public class ImageSendActivity extends AppCompatActivity {
             Uri imageUri = data.getData();
             imagePath = getRealPath(imageUri);
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                 iv_image.setImageBitmap(bitmap);
                 iv_image.setVisibility(View.VISIBLE);
             } catch (IOException e) {
@@ -215,7 +206,7 @@ public class ImageSendActivity extends AppCompatActivity {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showImage();
                 } else {
-                    Toast.makeText(ImageSendActivity.this, "GET_ACCOUNTS Denied",
+                    Toast.makeText(ImageEncryptionActivity.this, "Error: Permission Denied",
                             Toast.LENGTH_SHORT).show();
                 }
                 break;

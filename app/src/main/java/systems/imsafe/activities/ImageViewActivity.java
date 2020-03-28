@@ -1,10 +1,10 @@
 package systems.imsafe.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -12,8 +12,6 @@ import com.squareup.picasso.Picasso;
 import systems.imsafe.R;
 
 public class ImageViewActivity extends AppCompatActivity {
-
-   // private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

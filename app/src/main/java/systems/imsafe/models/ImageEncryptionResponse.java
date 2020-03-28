@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ImagePostResponse implements Serializable {
+public class ImageEncryptionResponse implements Serializable {
 
     @SerializedName("image")
     @Expose

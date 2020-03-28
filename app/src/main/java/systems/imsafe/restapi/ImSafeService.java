@@ -12,22 +12,21 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import systems.imsafe.models.Image;
 import systems.imsafe.models.ImageDecryptionResponse;
-import systems.imsafe.models.ImagePostResponse;
+import systems.imsafe.models.ImageEncryptionResponse;
 
-public interface RestApi {
+public interface ImSafeService {
+
     @GET("images/")
-    Call<List<Image>> basicLogin();
+    Call<List<Image>> getImageList();
 
     @Multipart
     @POST("images/")
-    Call<ImagePostResponse> sendImage(@Part MultipartBody.Part image,
-                                      @Part("name") RequestBody name,
-                                      @Part("description") RequestBody description,
-                                      @Part("password") RequestBody password);
-
+    Call<ImageEncryptionResponse> encryptImage(@Part MultipartBody.Part image,
+                                               @Part("name") RequestBody name,
+                                               @Part("description") RequestBody description,
+                                               @Part("password") RequestBody password);
 
     @Multipart
     @POST("images/{id}/decrypt/")
     Call<ImageDecryptionResponse> decryptImage(@Path("id") String id, @Part("password") RequestBody password);
-
 }
