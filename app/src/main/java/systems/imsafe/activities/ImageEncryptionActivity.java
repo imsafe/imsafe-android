@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -51,13 +52,17 @@ public class ImageEncryptionActivity extends AppCompatActivity {
     private String imagePath;
     private ProgressDialog progressDialog;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (checkPermissionREAD_EXTERNAL_STORAGE(ImageEncryptionActivity.this)) {
+            showImage();
+        }
+
         setContentView(R.layout.activity_image_encryption);
         initialize();
-
-        checkPermissionREAD_EXTERNAL_STORAGE(ImageEncryptionActivity.this);
 
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +116,7 @@ public class ImageEncryptionActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<ImageEncryptionResponse>() {
             @Override
-            public void onResponse(Call<ImageEncryptionResponse> call, Response<ImageEncryptionResponse> response) {
+            public void onResponse(@NotNull Call<ImageEncryptionResponse> call, @NotNull Response<ImageEncryptionResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Encrypted successfully", Toast.LENGTH_LONG).show();
@@ -119,7 +124,7 @@ public class ImageEncryptionActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ImageEncryptionResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<ImageEncryptionResponse> call, @NotNull Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(getApplicationContext(), "ERROR: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }

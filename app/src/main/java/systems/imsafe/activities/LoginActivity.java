@@ -79,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences prefs = getSharedPreferences("File", MODE_PRIVATE);
                     SharedPreferences.Editor e = prefs.edit();
                     e.putString("username", enteredUsername).putString("password", enteredPassword);
-
                     e.apply();
                     Toast.makeText(getApplicationContext(), "You have successfully logged in", Toast.LENGTH_SHORT).show();
                     Intent imageIntent = new Intent(getApplicationContext(), ImageListActivity.class);

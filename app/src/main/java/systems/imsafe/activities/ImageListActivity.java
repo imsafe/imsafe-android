@@ -9,12 +9,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -38,6 +40,8 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
     private ImageAdapter imageAdapter;
     private ProgressDialog progressDialog;
     private FloatingActionButton fab;
+    SwipeRefreshLayout refreshLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,21 +57,34 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
             }
         });
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getImageList();
+                refreshLayout.setRefreshing(false);
+            }
+        });
+
+        getImageList();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         getImageList();
     }
 
     public void initialize() {
         fab = findViewById(R.id.floatingActionButton);
         lvImageList = findViewById(R.id.lv_image);
+        refreshLayout = findViewById(R.id.refreshLayout);
     }
 
     public void getImageList() {
         service = ServiceGenerator.createService(ImSafeService.class);
 
         Call<List<Image>> call = service.getImageList();
-
         call.enqueue(new Callback<List<Image>>() {
-
             @Override
             public void onResponse(@NotNull Call<List<Image>> call, @NotNull Response<List<Image>> response) {
                 if (response.isSuccessful()) {
@@ -75,7 +92,7 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
                     assert images != null;
 
                     ArrayList<Image> imageList = new ArrayList<>(images);
-
+                    Collections.reverse(imageList);
                     imageAdapter = new ImageAdapter(ImageListActivity.this, imageList);
                     lvImageList.setAdapter(imageAdapter);
                     lvImageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -114,17 +131,14 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
     }
 
     public void decrypt(Integer imageId, String imagePassword) {
-
         RequestBody password = RequestBody.create(imagePassword, MediaType.parse("multipart/form-data"));
 
-
-        //service = ServiceGenerator.createService(ImSafeService.class);
         progressDialog = new ProgressDialog(ImageListActivity.this);
         progressDialog.setMessage("Decrypting");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        Call<ImageDecryptionResponse> call = service.decryptImage(imageId.toString(), password);
 
+        Call<ImageDecryptionResponse> call = service.decryptImage(imageId.toString(), password);
         call.enqueue(new Callback<ImageDecryptionResponse>() {
             @Override
             public void onResponse(@NotNull Call<ImageDecryptionResponse> call, @NotNull Response<ImageDecryptionResponse> response) {

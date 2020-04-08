@@ -7,6 +7,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,13 +32,12 @@ public class MainActivity extends AppCompatActivity {
         Log.e("username", username);
         Log.e("password", password);
 
-
         ImSafeService service = ServiceGenerator.createService(ImSafeService.class, username, password);
         Call<List<Image>> call = service.getImageList();
 
         call.enqueue(new Callback<List<Image>>() {
             @Override
-            public void onResponse(Call<List<Image>> call, Response<List<Image>> response) {
+            public void onResponse(@NotNull Call<List<Image>> call, @NotNull Response<List<Image>> response) {
                 if (response.isSuccessful()) {
                     intent = new Intent(MainActivity.this, ImageListActivity.class);
                 } else {
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Image>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<Image>> call, Throwable t) {
                 intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
