@@ -2,13 +2,18 @@ package systems.imsafe.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,6 +38,7 @@ import systems.imsafe.restapi.ServiceGenerator;
 import systems.imsafe.utils.ImagePasswordDialog;
 
 public class ImageListActivity extends AppCompatActivity implements ImagePasswordDialog.ImagePasswordDialogListener {
+    private Toolbar toolbar;
     private ListView lvImageList;
     private ImSafeService service;
     private int selectedImageId;
@@ -40,8 +46,7 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
     private ImageAdapter imageAdapter;
     private ProgressDialog progressDialog;
     private FloatingActionButton fab;
-    SwipeRefreshLayout refreshLayout;
-
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,16 +73,41 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
         getImageList();
     }
 
+    public void initialize() {
+        fab = findViewById(R.id.floatingActionButton);
+        lvImageList = findViewById(R.id.lv_image);
+        refreshLayout = findViewById(R.id.refreshLayout);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
     @Override
     protected void onRestart() {
         super.onRestart();
         getImageList();
     }
 
-    public void initialize() {
-        fab = findViewById(R.id.floatingActionButton);
-        lvImageList = findViewById(R.id.lv_image);
-        refreshLayout = findViewById(R.id.refreshLayout);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.logout) {
+            logout();
+        }
+        return true;
+    }
+
+    public void logout() {
+        SharedPreferences prefs = getSharedPreferences("File", MODE_PRIVATE);
+        prefs.edit().remove("username").remove("password").apply();
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        finish();
     }
 
     public void getImageList() {

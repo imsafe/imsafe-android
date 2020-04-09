@@ -3,6 +3,7 @@ package systems.imsafe.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class ImageAdapter extends BaseAdapter {
         return position;
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint({"InflateParams", "SetTextI18n"})
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View itemView = convertView;
@@ -48,8 +49,10 @@ public class ImageAdapter extends BaseAdapter {
         TextView tv_name = itemView.findViewById(R.id.tv_name);
         TextView tv_description = itemView.findViewById(R.id.tv_description);
         Image selectedImage = images.get(position);
-        tv_name.setText(selectedImage.getName());
-        tv_description.setText(selectedImage.getDescription());
+        String name = "<b>Name: </b>" + selectedImage.getName();
+        String description = "<b>Description: </b>" + selectedImage.getDescription();
+        tv_name.setText(Html.fromHtml(name));
+        tv_description.setText(Html.fromHtml(description));
         return itemView;
     }
 }

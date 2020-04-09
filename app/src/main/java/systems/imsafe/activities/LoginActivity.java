@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -63,6 +64,14 @@ public class LoginActivity extends AppCompatActivity {
         final String enteredUsername = etUsername.getText().toString();
         final String enteredPassword = etPassword.getText().toString();
 
+        if(TextUtils.isEmpty(enteredUsername)) {
+            etUsername.setError("Please fill out this field.");
+            return;
+        }
+        else if(TextUtils.isEmpty(enteredPassword)){
+            etPassword.setError("Please fill out this field.");
+            return;
+        }
         ImSafeService service = ServiceGenerator.createService(ImSafeService.class, enteredUsername, enteredPassword);
         Call<List<Image>> call = service.getImageList();
 

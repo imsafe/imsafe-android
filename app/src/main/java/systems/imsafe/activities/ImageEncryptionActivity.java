@@ -1,6 +1,7 @@
 package systems.imsafe.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,7 +48,7 @@ import systems.imsafe.restapi.ServiceGenerator;
 public class ImageEncryptionActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
-    private Button selectImage, sendImage;
+    private Button chooseImage, encryptImage;
     private ImageView iv_image;
     private EditText et_name, et_description, et_password;
     private String imagePath;
@@ -64,25 +66,29 @@ public class ImageEncryptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_encryption);
         initialize();
 
-        selectImage.setOnClickListener(new View.OnClickListener() {
+        chooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImage();
             }
         });
 
-        sendImage.setOnClickListener(new View.OnClickListener() {
+        encryptImage.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ShowToast")
             @Override
             public void onClick(View v) {
+                if (TextUtils.isEmpty(imagePath)) {
+                    Toast.makeText(getApplicationContext(), "Please choose an image.", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 encrypt();
             }
         });
     }
 
-
     public void initialize() {
-        selectImage = findViewById(R.id.btn_select_image);
-        sendImage = findViewById(R.id.btn_encrypt);
+        chooseImage = findViewById(R.id.btn_choose_image);
+        encryptImage = findViewById(R.id.btn_encrypt);
         iv_image = findViewById(R.id.imageView);
         et_name = findViewById(R.id.et_image_name);
         et_description = findViewById(R.id.et_image_description);
@@ -101,9 +107,24 @@ public class ImageEncryptionActivity extends AppCompatActivity {
         RequestBody requestBody = RequestBody.create(file, MediaType.parse("multipart/form-data"));
         MultipartBody.Part image = MultipartBody.Part.createFormData("image", file.getName(), requestBody);
 
-        RequestBody name = RequestBody.create(et_name.getText().toString(), MediaType.parse("multipart/form-data"));
-        RequestBody description = RequestBody.create(et_description.getText().toString(), MediaType.parse("multipart/form-data"));
-        RequestBody password = RequestBody.create(et_password.getText().toString(), MediaType.parse("multipart/form-data"));
+        final String enteredName = et_name.getText().toString();
+        final String enteredDescription = et_description.getText().toString();
+        final String enteredPassword = et_password.getText().toString();
+
+        if (TextUtils.isEmpty(enteredName)) {
+            et_name.setError("Please fill out this field.");
+            return;
+        } else if (TextUtils.isEmpty(enteredDescription)) {
+            et_description.setError("Please fill out this field.");
+            return;
+        } else if (TextUtils.isEmpty(enteredPassword)) {
+            et_password.setError("Please fill out this field.");
+            return;
+        }
+
+        RequestBody name = RequestBody.create(enteredName, MediaType.parse("multipart/form-data"));
+        RequestBody description = RequestBody.create(enteredDescription, MediaType.parse("multipart/form-data"));
+        RequestBody password = RequestBody.create(enteredPassword, MediaType.parse("multipart/form-data"));
 
         progressDialog = new ProgressDialog(ImageEncryptionActivity.this);
         progressDialog.setMessage("Encrypting");
@@ -120,6 +141,7 @@ public class ImageEncryptionActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Encrypted successfully", Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
 
@@ -146,6 +168,10 @@ public class ImageEncryptionActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        if (TextUtils.isEmpty(imagePath)) {
+            finish();
+        }
     }
 
     private String getRealPath(Uri uri) {
@@ -169,7 +195,6 @@ public class ImageEncryptionActivity extends AppCompatActivity {
                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     showDialog("External storage", context,
                             Manifest.permission.READ_EXTERNAL_STORAGE);
-
                 } else {
                     ActivityCompat
                             .requestPermissions(
@@ -220,5 +245,4 @@ public class ImageEncryptionActivity extends AppCompatActivity {
                         grantResults);
         }
     }
-
 }

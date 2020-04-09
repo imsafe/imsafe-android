@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/imageViewSecurity"
-        android:layout_width="55dp"
-        android:layout_height="50dp"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
@@ -33,11 +33,13 @@
         android:id="@+id/tv_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/imageViewSecurity"
-        android:layout_marginBottom="5dp"
         android:layout_alignStart="@id/tv_name"
-        android:text="Description: "
-        android:layout_toRightOf="@id/imageViewSecurity"
         android:layout_alignLeft="@id/tv_name"
-        />
+        android:layout_alignBottom="@id/imageViewSecurity"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@id/imageViewSecurity"
+        android:layout_toRightOf="@id/imageViewSecurity"
+        android:text="Description: " />
 </RelativeLayout>

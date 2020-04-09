@@ -17,9 +17,9 @@
 
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.ImageViewActivity" android:label="Decrypted Image"/>
-        <activity android:name=".activities.ImageListActivity" android:label="Encrypted Image List"/>
+        <activity android:name=".activities.ImageListActivity" android:label="Encrypted Image List" android:theme="@style/NoActionBar"/>
         <activity android:name=".activities.ImageEncryptionActivity" android:label="Encrypt an Image" />
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.MainActivity" android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
