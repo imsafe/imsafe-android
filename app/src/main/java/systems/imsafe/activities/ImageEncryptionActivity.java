@@ -111,14 +111,7 @@ public class ImageEncryptionActivity extends AppCompatActivity {
         final String enteredDescription = et_description.getText().toString();
         final String enteredPassword = et_password.getText().toString();
 
-        if (TextUtils.isEmpty(enteredName)) {
-            et_name.setError("Please fill out this field.");
-            return;
-        } else if (TextUtils.isEmpty(enteredDescription)) {
-            et_description.setError("Please fill out this field.");
-            return;
-        } else if (TextUtils.isEmpty(enteredPassword)) {
-            et_password.setError("Please fill out this field.");
+        if (checkFormInputs(enteredName, enteredDescription, enteredPassword)) {
             return;
         }
 
@@ -244,5 +237,20 @@ public class ImageEncryptionActivity extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions,
                         grantResults);
         }
+    }
+
+    public boolean checkFormInputs(String enteredName, String enteredDescription, String enteredPassword) {
+        boolean isEmpty = false;
+        if (TextUtils.isEmpty(enteredName)) {
+            et_name.setError("Please fill out this field.");
+            isEmpty = true;
+        } else if (TextUtils.isEmpty(enteredDescription)) {
+            et_description.setError("Please fill out this field.");
+            isEmpty = true;
+        } else if (TextUtils.isEmpty(enteredPassword)) {
+            et_password.setError("Please fill out this field.");
+            isEmpty = true;
+        }
+        return isEmpty;
     }
 }

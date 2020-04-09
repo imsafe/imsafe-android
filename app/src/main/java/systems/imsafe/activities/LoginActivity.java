@@ -30,6 +30,7 @@ import systems.imsafe.restapi.ServiceGenerator;
 public class LoginActivity extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
+    private Button btnCreateAccount;
     private Button btnLogin;
     private ProgressDialog progressDialog;
 
@@ -52,23 +53,30 @@ public class LoginActivity extends AppCompatActivity {
                 submitData();
             }
         });
+
+        btnCreateAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
+            }
+        });
     }
 
     public void initialize() {
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
+        btnCreateAccount = findViewById(R.id.btn_create_account);
     }
 
     public void submitData() {
         final String enteredUsername = etUsername.getText().toString();
         final String enteredPassword = etPassword.getText().toString();
 
-        if(TextUtils.isEmpty(enteredUsername)) {
+        if (TextUtils.isEmpty(enteredUsername)) {
             etUsername.setError("Please fill out this field.");
             return;
-        }
-        else if(TextUtils.isEmpty(enteredPassword)){
+        } else if (TextUtils.isEmpty(enteredPassword)) {
             etPassword.setError("Please fill out this field.");
             return;
         }
@@ -104,7 +112,5 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
     }
-
 }

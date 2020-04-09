@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = getSharedPreferences("File", MODE_PRIVATE);
-        String username = prefs.getString("username", "not found");
-        String password = prefs.getString("password", "not found");
+        String username = prefs.getString("username", "");
+        String password = prefs.getString("password", "");
         Log.e("username", username);
         Log.e("password", password);
 
