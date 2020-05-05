@@ -1,5 +1,6 @@
 package systems.imsafe.restapi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -14,6 +15,7 @@ import retrofit2.http.Path;
 import systems.imsafe.models.Image;
 import systems.imsafe.models.ImageDecryptionResponse;
 import systems.imsafe.models.ImageEncryptionResponse;
+import systems.imsafe.models.User;
 
 public interface ImSafeService {
 
@@ -38,4 +40,22 @@ public interface ImSafeService {
                                      @Part("password") RequestBody password,
                                      @Part("first_name") RequestBody firstName,
                                      @Part("last_name") RequestBody lastName);
+
+    @Multipart
+    @POST("search-user/")
+    Call<ArrayList<User>> search(@Part("name") RequestBody name);
+
+    @GET("followings/")
+    Call<ArrayList<User>> getFollowingList();
+
+    @GET("followers/")
+    Call<ArrayList<User>> getFollowerList();
+
+    @Multipart
+    @POST("follow/")
+    Call<ResponseBody> follow(@Part("user_id") RequestBody userId);
+
+    @Multipart
+    @POST("unfollow/")
+    Call<ResponseBody> unfollow(@Part("user_id") RequestBody userId);
 }

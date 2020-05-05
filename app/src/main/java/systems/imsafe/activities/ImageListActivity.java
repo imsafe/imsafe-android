@@ -99,6 +99,8 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
 
         if (id == R.id.logout) {
             logout();
+        } else if (id == R.id.action_search_user) {
+            startActivity(new Intent(getApplicationContext(), UserSearchActivity.class));
         }
         return true;
     }
@@ -175,10 +177,6 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
                 if (response.isSuccessful()) {
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Decrypted successfully", Toast.LENGTH_LONG).show();
-//                int statusCode = response.code();
-//                Log.e("Tag", "onResponse response " + response.isSuccessful());
-//                Log.e("status", "onResponse response " + statusCode);
-//                Toast.makeText(getApplicationContext(), response.body().getImage(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), ImageViewActivity.class);
                     assert response.body() != null;
                     intent.putExtra("decryptedImageUrl", response.body().getImage());
