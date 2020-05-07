@@ -1,6 +1,7 @@
 package systems.imsafe.activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -98,7 +100,14 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
         int id = item.getItemId();
 
         if (id == R.id.logout) {
-            logout();
+            new AlertDialog.Builder(this)
+                    .setMessage("Do you really want to log out?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            logout();
+                        }
+                    })
+                    .setNegativeButton("Cancel", null).show();
         } else if (id == R.id.action_search_user) {
             startActivity(new Intent(getApplicationContext(), UserSearchActivity.class));
         }

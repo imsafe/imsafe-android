@@ -60,8 +60,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             holder.btnFollow.setVisibility(View.INVISIBLE);
         }
 
-        for (User user : followingList) {
-            if (user.getUsername().equals(users.get(position).getUsername())) {
+        for (User following : followingList) {
+            if (following.getUsername().equals(users.get(position).getUsername())) {
                 holder.btnFollow.setText("Unfollow");
             }
         }
