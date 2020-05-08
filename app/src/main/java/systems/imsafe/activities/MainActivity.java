@@ -14,6 +14,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import systems.imsafe.R;
 import systems.imsafe.models.Image;
 import systems.imsafe.restapi.ImSafeService;
 import systems.imsafe.restapi.ServiceGenerator;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_main);
         SharedPreferences prefs = getSharedPreferences("File", MODE_PRIVATE);
         String username = prefs.getString("username", "");
         String password = prefs.getString("password", "");

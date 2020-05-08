@@ -11,6 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:hint="Username"
+        app:hintTextColor="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:textColorHint="@color/hint_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -30,6 +33,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="First Name"
+        app:hintTextColor="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:textColorHint="@color/hint_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -49,6 +55,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Last Name"
+        app:hintTextColor="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:textColorHint="@color/hint_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -68,6 +77,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="E-mail"
+        app:hintTextColor="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:textColorHint="@color/hint_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -87,6 +99,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Password"
+        app:hintTextColor="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:textColorHint="@color/hint_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -107,6 +122,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Repeat Password"
+        app:hintTextColor="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:textColorHint="@color/hint_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -121,7 +139,7 @@
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_create"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -131,5 +149,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_text_input_repeat_password" />
+        app:layout_constraintTop_toBottomOf="@+id/register_text_input_repeat_password"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:textColor="@color/icons"
+        android:textSize="15sp"
+        app:backgroundTint="@color/colorAccent"
+        app:cornerRadius="8dp"
+        app:rippleColor="#33AAAAAA"
+        app:strokeColor="@color/colorAccent"
+        app:strokeWidth="2dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

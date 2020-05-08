@@ -40,6 +40,7 @@ import systems.imsafe.R;
 import systems.imsafe.adapters.ImageAdapter;
 import systems.imsafe.models.Image;
 import systems.imsafe.models.ImageDecryptionResponse;
+import systems.imsafe.models.User;
 import systems.imsafe.restapi.ImSafeService;
 import systems.imsafe.restapi.ServiceGenerator;
 import systems.imsafe.utils.ImagePasswordDialog;
@@ -54,6 +55,7 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
     private ProgressDialog progressDialog;
     private FloatingActionButton fab;
     private SwipeRefreshLayout refreshLayout;
+    private ArrayList<User> followingList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,7 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
         });
 
         getImageList();
+        getFollowingList();
     }
 
     public void createSwipeMenu() {
@@ -85,7 +88,7 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
             @Override
             public void create(SwipeMenu menu) {
                 SwipeMenuItem decryptItem = new SwipeMenuItem(getApplicationContext());
-                decryptItem.setBackground(new ColorDrawable(Color.rgb(0x00, 0xE6, 0x76)));
+                decryptItem.setBackground(new ColorDrawable(Color.rgb(0x00, 0xC8, 0x53)));
                 decryptItem.setWidth(180);
                 decryptItem.setIcon(R.drawable.ic_lock_open);
                 menu.addMenuItem(decryptItem);
@@ -97,7 +100,7 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
                 menu.addMenuItem(deleteItem);
 
                 SwipeMenuItem transferItem = new SwipeMenuItem(getApplicationContext());
-                transferItem.setBackground(new ColorDrawable(Color.rgb(0x40, 0xC4, 0xFF)));
+                transferItem.setBackground(new ColorDrawable(Color.rgb(0x00, 0xB0, 0xFF)));
                 transferItem.setWidth(180);
                 transferItem.setIcon(R.drawable.ic_transfer);
                 menu.addMenuItem(transferItem);
@@ -120,26 +123,54 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
         lvImageList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                setSelectedImageId(imageAdapter.getItem(position).getId());
+                int imageId = getSelectedImageId();
                 switch (index) {
                     case 0:
-                        setSelectedImageId(imageAdapter.getItem(position).getId());
                         openDialog();
                         break;
                     case 1:
-                        new AlertDialog.Builder(menu.getContext())
-                                .setMessage("Do you really want to delete this image?")
-                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        setSelectedImageId(imageAdapter.getItem(position).getId());
-                                        delete(getSelectedImageId());
-                                    }
-                                })
-                                .setNegativeButton("Cancel", null).show();
+                        showDeleteDialog(menu, imageId);
+                        break;
+
+                    case 2:
+                        showTransferDialog(menu, imageId);
                         break;
                 }
                 return false;
             }
         });
+    }
+
+    public void showTransferDialog(SwipeMenu menu, int imageId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(menu.getContext());
+        builder.setTitle("Choose a user");
+
+        String[] followingListUsernames = new String[followingList.size()];
+        for (int i = 0; i < followingList.size(); i++) {
+            followingListUsernames[i] = followingList.get(i).getUsername();
+        }
+
+        builder.setItems(followingListUsernames, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                transfer(followingList.get(which).getId(), imageId);
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void showDeleteDialog(SwipeMenu menu, int imageId) {
+        new AlertDialog.Builder(menu.getContext())
+                .setMessage("Do you really want to delete this image?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //setSelectedImageId(imageAdapter.getItem(position).getId());
+                        delete(imageId);
+                    }
+                })
+                .setNegativeButton("Cancel", null).show();
     }
 
     public void initialize() {
@@ -154,6 +185,7 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
     protected void onRestart() {
         super.onRestart();
         getImageList();
+        getFollowingList();
     }
 
     @Override
@@ -190,7 +222,6 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
 
     public void getImageList() {
         service = ServiceGenerator.createService(ImSafeService.class);
-
         Call<List<Image>> call = service.getImageList();
         call.enqueue(new Callback<List<Image>>() {
             @Override
@@ -198,7 +229,6 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
                 if (response.isSuccessful()) {
                     images = response.body();
                     assert images != null;
-
                     ArrayList<Image> imageList = new ArrayList<>(images);
                     Collections.reverse(imageList);
                     imageAdapter = new ImageAdapter(ImageListActivity.this, imageList);
@@ -250,6 +280,7 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
                     Intent intent = new Intent(getApplicationContext(), ImageViewActivity.class);
                     assert response.body() != null;
                     intent.putExtra("decryptedImageUrl", response.body().getImage());
+                    intent.putExtra("imageName", response.body().getName());
                     startActivity(intent);
                 }
             }
@@ -270,6 +301,41 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
                 if (response.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Deleted successfully", Toast.LENGTH_SHORT).show();
                     getImageList();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+
+            }
+        });
+    }
+
+    private void getFollowingList() {
+        Call<ArrayList<User>> call = service.getFollowingList();
+        call.enqueue(new Callback<ArrayList<User>>() {
+            @Override
+            public void onResponse(@NotNull Call<ArrayList<User>> call, @NotNull Response<ArrayList<User>> response) {
+                if (response.isSuccessful()) {
+                    followingList = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ArrayList<User>> call, @NotNull Throwable t) {
+            }
+        });
+    }
+
+    public void transfer(Integer newOwner, Integer imageId) {
+        RequestBody newOwnerId = RequestBody.create(newOwner.toString(), MediaType.parse("multipart/form-data"));
+        Call<ResponseBody> call = service.transferImage(imageId.toString(), newOwnerId);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Transferred successfully", Toast.LENGTH_LONG).show();
                 }
             }
 

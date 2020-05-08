@@ -34,7 +34,8 @@
             android:name=".activities.RegistrationActivity"
             android:label="Create your account" />
 
-        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.LoginActivity"
+            android:theme="@style/NoActionBar"/>
 
         <activity
             android:name=".activities.ImageViewActivity"
@@ -47,7 +48,8 @@
 
         <activity
             android:name=".activities.ImageEncryptionActivity"
-            android:label="Encrypt an Image" />
+            android:label="Encrypt an Image"
+            />
 
     </application>
 

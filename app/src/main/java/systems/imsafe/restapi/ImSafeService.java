@@ -63,4 +63,8 @@ public interface ImSafeService {
 
     @DELETE("images/{id}/")
     Call<ResponseBody> deleteImage(@Path("id") String id);
+
+    @Multipart
+    @POST("images/{id}/transfer/")
+    Call<ResponseBody> transferImage(@Path("id") String id, @Part("new_owner") RequestBody newOwnerId);
 }

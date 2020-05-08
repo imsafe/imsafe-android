@@ -46,7 +46,6 @@ import systems.imsafe.restapi.ImSafeService;
 import systems.imsafe.restapi.ServiceGenerator;
 
 public class ImageEncryptionActivity extends AppCompatActivity {
-
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
     private Button chooseImage, encryptImage;
     private ImageView iv_image;
@@ -126,8 +125,6 @@ public class ImageEncryptionActivity extends AppCompatActivity {
 
         ImSafeService service = ServiceGenerator.createService(ImSafeService.class);
         Call<ImageEncryptionResponse> call = service.encryptImage(image, name, description, password);
-
-
         call.enqueue(new Callback<ImageEncryptionResponse>() {
             @Override
             public void onResponse(@NotNull Call<ImageEncryptionResponse> call, @NotNull Response<ImageEncryptionResponse> response) {
@@ -171,6 +168,7 @@ public class ImageEncryptionActivity extends AppCompatActivity {
         String[] projection = {MediaStore.Images.Media.DATA};
         CursorLoader loader = new CursorLoader(getApplicationContext(), uri, projection, null, null, null);
         Cursor cursor = loader.loadInBackground();
+        assert cursor != null;
         int column_idx = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         String result = cursor.getString(column_idx);
@@ -224,18 +222,16 @@ public class ImageEncryptionActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    showImage();
-                } else {
-                    Toast.makeText(ImageEncryptionActivity.this, "Error: Permission Denied",
-                            Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions,
-                        grantResults);
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showImage();
+            } else {
+                Toast.makeText(ImageEncryptionActivity.this, "Error: Permission Denied",
+                        Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions,
+                    grantResults);
         }
     }
 

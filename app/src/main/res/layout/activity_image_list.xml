@@ -50,12 +50,14 @@
             android:layout_marginBottom="17dp"
             android:clickable="true"
             android:focusable="true"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/colorAccent"
+            app:tint="@null"
             app:fabSize="auto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_black_24dp"
-            tools:ignore="VectorDrawableCompat" />
+            app:srcCompat="@drawable/ic_add_24dp"
+            tools:ignore="VectorDrawableCompat"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
