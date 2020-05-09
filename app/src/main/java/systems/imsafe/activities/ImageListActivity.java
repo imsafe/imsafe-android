@@ -276,11 +276,11 @@ public class ImageListActivity extends AppCompatActivity implements ImagePasswor
             public void onResponse(@NotNull Call<ImageDecryptionResponse> call, @NotNull Response<ImageDecryptionResponse> response) {
                 if (response.isSuccessful()) {
                     progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Decrypted successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Decrypted successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), ImageViewActivity.class);
                     assert response.body() != null;
                     intent.putExtra("decryptedImageUrl", response.body().getImage());
-                    intent.putExtra("imageName", response.body().getName());
+                    intent.putExtra("decryptedImageName", response.body().getName());
                     startActivity(intent);
                 }
             }
