@@ -7,14 +7,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_username"
-        app:hintTextColor="@color/colorAccent"
-        app:boxStrokeColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Username"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:textColorHint="@color/hint_selector"
+        app:boxStrokeColor="@color/colorAccent"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,8 +22,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter your username" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -34,9 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Password"
-        app:hintTextColor="@color/colorAccent"
         app:boxStrokeColor="@color/colorAccent"
-        android:textColorHint="@color/hint_selector"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,50 +43,48 @@
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_login"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Log In"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_password"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:textColor="@color/icons"
         android:textSize="15sp"
         app:backgroundTint="@color/colorAccent"
         app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_password"
         app:rippleColor="#33AAAAAA"
         app:strokeColor="@color/colorAccent"
-        app:strokeWidth="2dp"/>
+        app:strokeWidth="2dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_create_account"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text="Create New Account"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:textColor="@color/icons"
         android:textSize="15sp"
         app:backgroundTint="@color/colorAccent"
         app:cornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="#33AAAAAA"
         app:strokeColor="@color/colorAccent"
-        app:strokeWidth="2dp"
-        />
+        app:strokeWidth="2dp" />
 
     <ImageView
         android:id="@+id/imageView3"

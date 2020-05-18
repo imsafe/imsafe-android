@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_text_input_username"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:hint="Username"
-        app:hintTextColor="@color/colorAccent"
         app:boxStrokeColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:textColorHint="@color/hint_selector"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,20 +21,18 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_register_username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter your username" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_text_input_first_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="First Name"
-        app:hintTextColor="@color/colorAccent"
         app:boxStrokeColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:textColorHint="@color/hint_selector"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,20 +41,18 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_register_first_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter your first name" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_text_input_last_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Last Name"
-        app:hintTextColor="@color/colorAccent"
         app:boxStrokeColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:textColorHint="@color/hint_selector"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,20 +61,18 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_register_last_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter your last name" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_text_input_email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="E-mail"
-        app:hintTextColor="@color/colorAccent"
         app:boxStrokeColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:textColorHint="@color/hint_selector"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,20 +81,18 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_register_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter your email" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_text_input_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Password"
-        app:hintTextColor="@color/colorAccent"
         app:boxStrokeColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:textColorHint="@color/hint_selector"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,20 +102,18 @@
             android:id="@+id/et_register_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_text_input_repeat_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Repeat Password"
-        app:hintTextColor="@color/colorAccent"
         app:boxStrokeColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:textColorHint="@color/hint_selector"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -135,27 +123,26 @@
             android:id="@+id/et_register_repeat_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Repeat password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_create"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="Create"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_text_input_repeat_password"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:textColor="@color/icons"
         android:textSize="15sp"
         app:backgroundTint="@color/colorAccent"
         app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_text_input_repeat_password"
         app:rippleColor="#33AAAAAA"
         app:strokeColor="@color/colorAccent"
-        app:strokeWidth="2dp"/>
+        app:strokeWidth="2dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

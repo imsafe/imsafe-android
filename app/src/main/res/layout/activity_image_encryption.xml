@@ -17,14 +17,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_image_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="Name"
-        app:hintTextColor="@color/colorAccent"
         app:boxStrokeColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:textColorHint="@color/hint_selector"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,20 +32,18 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_image_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter image name" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_image_description"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:hintTextColor="@color/colorAccent"
-        app:boxStrokeColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:hint="Description"
-        android:textColorHint="@color/hint_selector"
+        app:boxStrokeColor="@color/colorAccent"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,20 +52,18 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_image_description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter image description" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Password"
-        app:hintTextColor="@color/colorAccent"
         app:boxStrokeColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:textColorHint="@color/hint_selector"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +73,6 @@
             android:id="@+id/et_image_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter image password"
             android:inputType="numberPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,23 +98,23 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_choose_image"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textAllCaps="false"
         android:text="Choose Image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_password"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        android:textAllCaps="false"
         android:textColor="@color/icons"
         android:textSize="15sp"
         app:backgroundTint="@color/colorAccent"
         app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_password"
         app:rippleColor="#33AAAAAA"
         app:strokeColor="@color/colorAccent"
-        app:strokeWidth="2dp"/>
+        app:strokeWidth="2dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
